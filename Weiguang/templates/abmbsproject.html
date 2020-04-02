@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+
+{% block title %}任务列表{% endblock %}
+
+{% block staticcss %}
+
+
+{% endblock %}
+
+{% block staticjs %}
+<script>
+    $(document).ready(function () {
+        $('#dataTable').DataTable({
+            responsive: true,
+            "language": {
+
+                "sProcessing": "处理中...",
+                "sLengthMenu": "显示 _MENU_ 项结果",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "表中数据为空",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+<div id="page-wrapper">
+
+
+
+
+    <div class="container-fluid">
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">笔试项目</h1>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-8 col-md-offset-2">
+                <div>
+                    <h3 style="text-align: center"></h3>
+                </div>
+                <form method="post" enctype="multipart/form-data" action="./abmbsproject"
+                    class="table table-bordered form-horizontal">
+                    {% csrf_token %}
+                    
+                    {{ form.as_p }}
+                    <input type="submit" value="提交" />
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

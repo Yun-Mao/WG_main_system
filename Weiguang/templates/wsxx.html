@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="h3 mb-4 text-gray-800">完善个人信息</h1>
+
+<div class="row">
+
+    <div class="col-lg-6">
+
+        <!-- Circle Buttons -->
+        {% if not changeWSXX and isWSXX%}
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">你的个人信息</h6>
+            </div>
+            <div class="card-body">
+                <p>以下显示你当前的个人信息，你只有完善了信息才可以报名支教项目。信息将经过严格的保密。</p>
+                <form class="user" action='' method="POST">
+                    {% csrf_token %}
+                    {% for field in information %}
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="btn btn-primary" id="basic-addon1">{{field.label}}</span>
+                        </div>
+                        {{field}}
+                    </div>
+                    {% endfor %}
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="btn btn-primary" id="basic-addon1">电子邮箱</span>
+                        </div>
+                        <input type="text" name="email" value="{{email}}" class="form-control" readonly="True"
+                            maxlength="12" required="" id="id_email">
+
+                    </div>
+                    <input type="hidden" name="changeWSXX" value="yes" class="form-control" readonly="True" required="">
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div {% if message.tags %} class="alert alert-{{ message.tags }}" role="alert" {% endif %}>
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    <input type='submit' class="btn btn-primary btn-user btn-block" value="修改个人信息">
+                </form>
+
+            </div>
+        </div>
+        {% endif %}
+        {% if isWSXX and changeWSXX %}
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">修改个人信息</h6>
+            </div>
+            <div class="card-body">
+                <p>在这里修改你的个人信息，请谨慎操作</p>
+                <form class="user" action='' method="POST">
+                    {% csrf_token %}
+                    {% for field in information2 %}
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="btn btn-primary" id="basic-addon1">{{field.label}}</span>
+                        </div>
+                        {{field}}
+                    </div>
+
+                    {% endfor %}
+                    
+                    <input type='submit' class="btn btn-primary btn-user btn-block" value="提交">
+
+                </form>
+            </div>
+        </div>
+        {% endif %}
+        {% if not isWSXX %}
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">完善个人信息</h6>
+            </div>
+            <div class="card-body">
+                <p>以下显示你的个人信息，你只有完善了信息才可以报名相关项目</p>
+                <form class="user" action='' method="POST">
+                    {% csrf_token %}
+                    {% for field in information3 %}
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="btn btn-primary" id="basic-addon1">{{field.label}}</span>
+                        </div>
+                        {{field}}
+                    </div>
+                    {% endfor %}
+                    <input type='submit' class="btn btn-primary btn-user btn-block" value="提交">
+
+                </form>
+            </div>
+        </div>
+        {% endif %}
+
+
+    </div>
+
+    <div class="col-lg-6">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">说明</h6>
+            </div>
+            <div class="card-body">
+                请确保你的信息真实无误，否则影响到后续报名工作，后果自负。
+                电子邮箱的修改在个人中心当中。
+            </div>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

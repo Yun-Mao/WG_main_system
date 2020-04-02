@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block staticcss %}
+
+{% endblock %}
+
+{% block staticjs %}
+
+{% endblock %}
+
+{% block content %}
+
+
+<!-- Page Content -->
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">新任务</h1>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">操作面板</h6>
+        </div>
+        <div class="card-body">
+            <p>操作面板文案</p>
+            <form class="user" action='' onsubmit="return dosubmit()" method="POST">
+                {% csrf_token %}
+                {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+                {% endfor %}
+
+                {% for field in form.visible_fields %}
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="btn btn-primary" id="basic-addon1">{{field.label}}</span>
+                    </div>
+                    {{field}}
+                </div>
+                {% endfor %}
+
+                {% if messages %}
+                {% for message in messages %}
+                <div {% if message.tags %} class="alert alert-{{ message.tags }}" role="alert" {% endif %}>
+                    {{ message }}
+                </div>
+                {% endfor %}
+                {% endif %}
+                {% if messages %}
+                {% for message in messages %}
+                <div {% if message.tags %} class="alert alert-{{ message.tags }}" role="alert" {% endif %}>
+                    {{ message }}
+                </div>
+                {% endfor %}
+                {% endif %}
+                <input type="submit" class="btn btn-success btn-block" value="保存更改"></button>
+                <input type="reset" class="btn btn-danger btn-block" value="取消"></button>
+            </form>
+
+        </div>
+    </div>
+
+
+    <!--表单报错显示-->
+    {% if form.errors %}
+
+    {% for field, error in form.errors.items %}
+    <div class="alert alert-error">
+        {{ field }} <code>{{ error }}</code>
+    </div>
+    {% endfor %}
+
+
+    {% endif %}
+
+
+
+</div>
+<!-- /#page-wrapper -->
+<!-- Button trigger modal -->
+
+{% endblock %}

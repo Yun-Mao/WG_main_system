@@ -1,0 +1,248 @@
+{% extends "base.html" %}
+{% block staticjs %}
+
+
+<script>
+    $(document).ready(function () {
+      $('#dataTable').DataTable({
+        responsive: true,
+        "language": {
+
+          "sProcessing": "处理中...",
+          "sLengthMenu": "显示 _MENU_ 项结果",
+          "sZeroRecords": "没有匹配结果",
+          "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+          "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+          "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+          "sInfoPostFix": "",
+          "sSearch": "搜索:",
+          "sUrl": "",
+          "sEmptyTable": "表中数据为空",
+          "sLoadingRecords": "载入中...",
+          "sInfoThousands": ",",
+          "oPaginate": {
+            "sFirst": "首页",
+            "sPrevious": "上页",
+            "sNext": "下页",
+            "sLast": "末页"
+          },
+          "oAria": {
+            "sSortAscending": ": 以升序排列此列",
+            "sSortDescending": ": 以降序排列此列"
+          }
+        }
+      });
+    });
+    $(document).ready(function () {
+      $('#dataTable2').DataTable({
+        responsive: true,
+        "language": {
+
+          "sProcessing": "处理中...",
+          "sLengthMenu": "显示 _MENU_ 项结果",
+          "sZeroRecords": "没有匹配结果",
+          "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+          "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+          "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+          "sInfoPostFix": "",
+          "sSearch": "搜索:",
+          "sUrl": "",
+          "sEmptyTable": "表中数据为空",
+          "sLoadingRecords": "载入中...",
+          "sInfoThousands": ",",
+          "oPaginate": {
+            "sFirst": "首页",
+            "sPrevious": "上页",
+            "sNext": "下页",
+            "sLast": "末页"
+          },
+          "oAria": {
+            "sSortAscending": ": 以升序排列此列",
+            "sSortDescending": ": 以降序排列此列"
+          }
+        }
+      });
+    });
+  </script>
+{% endblock %}
+{% block content %}
+
+<h1 class="h3 mb-4 text-gray-800">人员管理</h1>
+
+<div class="row">
+
+    <div class="col-lg-6">
+
+        <!-- Circle Buttons -->
+
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">管理员设置</h6>
+            </div>
+            <div class="card-body">
+                <p>管理员文案</p>
+                <form class="user" action='' method="POST">
+                    {% csrf_token %}
+                    {% for field in information_add %}
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="btn btn-primary" id="basic-addon1">{{field.label}}</span>
+                        </div>
+                        {{field}}
+                    </div>
+                    {% endfor %}
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div {% if message.tags %} class="alert alert-{{ message.tags }}" role="alert" {% endif %}>
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    <input type='submit' class="btn btn-primary btn-user btn-block" value="设为管理员">
+                </form>
+
+            </div>
+        </div>
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">工作人员设置</h6>
+            </div>
+            <div class="card-body">
+                <p>工作人员设置文案</p>
+                <form class="user" action='' method="POST">
+                    {% csrf_token %}
+                    {% for field in staffuser_add %}
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="btn btn-primary" id="basic-addon1">{{field.label}}</span>
+                        </div>
+                        {{ field.errors }}
+                        {{field}}
+                    </div>
+                    {% endfor %}
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div {% if message.tags %} class="alert alert-{{ message.tags }}" role="alert" {% endif %}>
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+
+                    {% endif %}
+                    <script>
+                        $(function () {
+                            $('input[name="birthdate"]').daterangepicker({
+                                singleDatePicker: true,
+                                showDropdowns: true,
+                                minYear: 1901,
+                                
+                            });
+                        });
+                    </script>
+                    <input type='submit' class="btn btn-primary btn-user btn-block" value="设为管理员">
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">管理员</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>选择</th>
+                                <th>ID</th>
+                                <th>姓名</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>选择</th>
+                                <th>ID</th>
+                                <th>姓名</th> 
+                                <th>操作</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            {% for list in information_now %}
+                            <tr class="odd gradeX">
+                                <td><input class="checkbox" type="checkbox" value="{{ list.staffuser__id }}" name="mark_done"></td>
+                                <td>{{ forloop.counter }}
+                                </td>
+                                <td>{{ list.staffuser__myuser__realname}}</td>
+                                <td>
+                                    <a class="btn btn-outline btn-info" href="">编辑</a>
+                                    <a class="btn btn-outline btn-danger" href="#"
+                                        data-href="" data-toggle="modal"
+                                        data-target="#confirm-delete">删除</a>
+    
+                                </td>
+                            </tr>
+                            {% endfor %}
+    
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">工作人员</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable2" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>选择</th>
+                                <th>ID</th>
+                                <th>部门</th>
+                                <th>姓名</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>选择</th>
+                                <th>ID</th>
+                                <th>部门</th>
+                                <th>姓名</th> 
+                                <th>操作</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            {% for list in staffuser_now %}
+                            <tr class="odd gradeX">
+                                <td><input class="checkbox" type="checkbox" value="{{ list.id }}" name="mark_done"></td>
+                                <td>{{ forloop.counter }}
+                                </td>
+                                <td>{{ list.department}}</td>
+                                <td>{{ list.myuser__realname}}</td>
+                                <td>
+                                    <a class="btn btn-outline btn-info" href="">编辑</a>
+                                    <a class="btn btn-outline btn-danger" href="#"
+                                        data-href="" data-toggle="modal"
+                                        data-target="#confirm-delete">删除</a>
+    
+                                </td>
+                            </tr>
+                            {% endfor %}
+    
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+{% endblock %}
